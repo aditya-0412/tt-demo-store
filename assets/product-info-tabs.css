@@ -1,0 +1,45 @@
+/* CUSTOM CODE FOR IMPLEMENTING TABS LAYOUT ON PRODUCT PAGE */
+
+.pdp-tabs__nav {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border, #e1e1e1);
+  margin-bottom: 1rem;
+  list-style: none;
+  padding: 0;
+}
+
+.pdp-tabs__button {
+  flex: 1;
+  text-align: center;
+  background: none;
+  border: none;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  cursor: pointer;
+  color: var(--color-foreground, #555);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.pdp-tabs__button:hover {
+  color: var(--color-foreground, #111);
+}
+
+.pdp-tabs__button.is-active {
+  font-weight: 600;
+  color: var(--color-foreground, #111);
+}
+
+/* Panels */
+.pdp-tabs__panel {
+  display: block;
+}
+
+.pdp-tabs__panel[hidden] {
+  display: none;
+}
+
+.pdp-tabs__content {
+  padding-top: 1rem;
+}

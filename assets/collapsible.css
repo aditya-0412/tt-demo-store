@@ -1,0 +1,41 @@
+.pdp-accordion__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.8rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pdp-accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.pdp-accordion__summary .icon-caret {
+  width: 12px;
+  height: 12px;
+  margin-left: 0.4rem;
+  transition: transform 0.3s ease;
+}
+
+.pdp-accordion__item[open] .pdp-accordion__summary .icon-caret {
+  transform: rotate(180deg);
+}
+
+/* Accordion content with transition */
+.pdp-accordion__content {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  padding: 0; /* no gap when collapsed */
+  transition: max-height 0.35s ease, opacity 0.35s ease, padding 0.35s ease;
+}
+
+.pdp-accordion__item[open] .pdp-accordion__content {
+  max-height: 1200px; /* large enough for PDP copy */
+  opacity: 1;
+  visibility: visible;
+  padding: 0.6rem 0 1rem; /* your original spacing */
+}

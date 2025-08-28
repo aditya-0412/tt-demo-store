@@ -1,0 +1,58 @@
+<script src="{{ 'mega-menu.js' | asset_url }}" defer></script> {% comment %} Custom Code: Added JS for custom-mega-menu {% endcomment %}
+
+{% liquid
+  assign image_size = image_size | default: 300
+  assign default_img = ''
+  assign default_title = ''
+%}
+
+<div class="tr-mega-menu" role="region" aria-label="{{ link.title | escape }}">
+  <div class="tr-mega-menu__panel">
+    <nav class="tr-mega-menu__left" aria-label="{{ link.title | escape }} sub-links">
+      <ul class="tr-mega-menu__nav" role="list">
+        {%- for child in link.links -%}
+          {%- liquid
+            assign img_url = ''
+            if child.type == 'collection_link' and child.object and child.object.image
+              assign img_url = child.object.image | image_url: width: image_size
+            endif
+
+            if default_img == '' and img_url != ''
+              assign default_img = img_url
+              assign default_title = child.title | escape
+            endif
+          -%}
+          {%- if child.object.all_products_count > 0 -%}
+            <li class="tr-mega-menu__nav-item{% if forloop.first %} is-active{% endif %}">
+              <a
+                href="{{ child.url }}"
+                class="tr-mega-menu__nav-link"
+                data-image="{{ img_url }}"
+                data-title="{{ child.title | escape }}"
+              >
+                {{ child.title | escape }}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="tr-mega-menu__right">
+      <div class="tr-mega-menu__image-box">
+        {% if default_img != '' %}
+          <img
+            width=""
+            height=""
+            class="tr-mega-menu__display-image"
+            src="{{ default_img }}"
+            alt="{{ default_title | escape }}"
+            loading="lazy"
+          >
+        {% else %}
+          <div class="tr-mega-menu__placeholder" role="img" aria-label="No image available">No image available</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

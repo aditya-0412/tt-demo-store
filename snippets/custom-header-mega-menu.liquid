@@ -1,0 +1,34 @@
+<nav class="tr-header__inline-menu" aria-label="Header menu">
+  <ul class="tr-list-menu tr-list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+      {%- assign has_children = false -%}
+      {%- if link.links != blank -%}
+        {%- assign has_children = true -%}
+      {%- endif -%}
+
+      <li
+        class="
+          tr-list-menu__item
+          {%- if has_children %} tr-list-menu__item--has-mega{% endif -%}
+          {%- if link.current %} is-active{% endif -%}
+        "
+      >
+        <a
+          id="HeaderMenu-{{ link.handle }}"
+          href="{{ link.url }}"
+          class="tr-list-menu__link tr-link tr-link--text focus-inset"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+          aria-haspopup="{{ has_children }}"
+        >
+          {{ link.title | escape }}
+        </a>
+
+        {%- if has_children -%}
+          {% render 'custom-mega-menu', link: link, image_size: section.settings.mega_menu_image_size %}
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
