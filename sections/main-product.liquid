@@ -195,7 +195,10 @@
                     {%- endif -%}
                   {%- endif -%}
                 </p>
-                {% comment %} Custom Code: Collapsible Layout {% endcomment %}
+                {% comment %}
+                  Custom Code Start: Collapsible Row Layout
+                  Included JS in product-info.js
+                {% endcomment %}
               {%- when 'product_info' -%}
                 {%- comment -%} Row 1: Product Description (always present, open by default) {%- endcomment -%}
                 <details class="pdp-accordion__item" data-accordion-block open>
@@ -249,7 +252,37 @@
                     </div>
                   </details>
                 {%- endif -%}
-                {% comment %} Custom Code: Tabs Layout {% endcomment %}
+
+                {%- comment -%} Row 4: Variant Description metafield {%- endcomment -%}
+                {%- assign mf_variant_description = product.selected_or_first_available_variant.metafields.custom.variant_description -%}
+                <details
+                  id="variant-desc-row"
+                  class="pdp-accordion__item"
+                  data-accordion-block
+                  {% if mf_variant_description == blank %}
+                    style="display:none"
+                  {% endif %}
+                >
+                  <summary class="pdp-accordion__summary h4" role="button" aria-expanded="false">
+                    {{ block.settings.variant_description_label }}
+                    <svg class="icon-caret" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M9 1L5 5 1 1" stroke="currentColor" stroke-width="1.5" fill="none" fill-rule="evenodd"/>
+                    </svg>
+                  </summary>
+                  <div class="pdp-accordion__content rte">
+                    <div id="variant-desc-content">
+                      {%- if mf_variant_description != blank -%}
+                        {%- if mf_variant_description.type == 'rich_text' -%}
+                          {{ mf_variant_description | metafield_tag }}
+                        {%- else -%}
+                          {{ mf_variant_description.value | newline_to_br }}
+                        {%- endif -%}
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </details>
+                {% comment %} Custom Code End: Collapsible Row Layout {% endcomment %}
+                {% comment %} Custom Code Start: Tabs Layout {% endcomment %}
               {%- when 'product_info_tabs' -%}
                 {%- assign mf_additional = product.metafields.custom.additional_info -%}
                 {%- assign mf_shipping = product.metafields.custom.shipping_details -%}
@@ -326,6 +359,7 @@
                     {%- endif -%}
                   </div>
                 </div>
+                {% comment %} Custom Code End: Tabs Layout {% endcomment %}
               {%- when 'sku' -%}
                 <p
                   class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
@@ -803,6 +837,39 @@
                 </product-recommendations>
               {%- when 'icon-with-text' -%}
                 {% render 'icon-with-text', block: block %}
+                {% comment %} Custom Code Start: Variant based description show {% endcomment %}
+                {% comment %}
+                  Custom Code: Added schema ('variant-description') in blocks[]
+                  Custom Code: Added code in global.js [Commented: Custom Code Start: Update Variant Description]
+                  Case: If some variant has variant description and some variant has not, then manually handled for update on variant changed
+                {% endcomment %}
+              {%- when 'variant-description' -%}
+                {%- assign variant_desc = product.selected_or_first_available_variant.metafields.custom.variant_description -%}
+
+                <div
+                  id="variant-desc"
+                  class="variant-description-block"
+                  {% if variant_desc == blank %}
+                    style="display:none"
+                  {% endif %}
+                >
+                  {%- if variant_desc != blank -%}
+                    <strong>{{ block.settings.variant_desc_label }}</strong>
+                    <p>{{ variant_desc }}</p>
+                  {%- endif -%}
+                </div>
+
+                <!-- Variant Metafields JSON for JS -->
+                <script id="variant-metafields-data" type="application/json">
+                  {
+                    {%- for variant in product.variants -%}
+                      "{{ variant.id }}": {
+                        "variant_description": {{ variant.metafields.custom.variant_description | json }}
+                      }{%- unless forloop.last -%},{%- endunless -%}
+                    {%- endfor -%}
+                  }
+                </script>
+                {% comment %} Custom Code Start: Variant based description show {% endcomment %}
             {%- endcase -%}
           {%- endfor -%}
           <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -875,6 +942,19 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "variant-description",
+      "name": "Variant Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "variant_desc_label",
+          "label": "Label",
+          "default": "Variant Description"
+        }
+      ]
     },
     {
       "type": "text",
@@ -1073,6 +1153,12 @@
           "id": "shipping_label",
           "label": "Shipping Details Label",
           "default": "Shipping Details"
+        },
+        {
+          "type": "text",
+          "id": "variant_description_label",
+          "label": "Variant Description Label",
+          "default": "Variant Description"
         }
       ]
     },

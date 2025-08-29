@@ -47,7 +47,16 @@
         },
         "product_info_wD9KjG": {
           "type": "product_info_tabs",
-          "settings": {}
+          "settings": {
+            "additional_label": "Product Insights",
+            "shipping_label": "Delivery & Returns"
+          }
+        },
+        "variant_description_BphL8B": {
+          "type": "variant-description",
+          "settings": {
+            "variant_desc_label": "Style-Specific Details"
+          }
         },
         "share": {
           "type": "share",
@@ -64,6 +73,7 @@
         "quantity_selector",
         "buy_buttons",
         "product_info_wD9KjG",
+        "variant_description_BphL8B",
         "share"
       ],
       "settings": {
