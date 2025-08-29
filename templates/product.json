@@ -48,9 +48,9 @@
         "product_info_wD9KjG": {
           "type": "product_info",
           "settings": {
-            "additional_label": "Additional Info",
-            "shipping_label": "Shipping Details",
-            "variant_description_label": "Variant Description"
+            "additional_label": "Product Insights",
+            "shipping_label": "Delivery & Returns",
+            "variant_description_label": "Variant Highlights"
           }
         },
         "share": {
