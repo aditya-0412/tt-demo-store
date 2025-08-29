@@ -1241,7 +1241,7 @@ class VariantSelects extends HTMLElement {
     super();
   }
 
-    // Custom Code Start: Getting Current Variant images for selected variant
+  // Custom Code Start: Getting Current Variant images for selected variant
   getCurrentVariant(target) {
     const currentImgAlt = target?.value?.toLowerCase();
     const thumbnails = document.querySelectorAll("[thumbnail-alt]");
@@ -1265,7 +1265,7 @@ class VariantSelects extends HTMLElement {
     this.addEventListener("change", (event) => {
       const target = this.getInputForEventTarget(event.target);
       this.updateSelectionMetadata(event);
-      this.getCurrentVariant(target); // Custom Code: function called
+      this.getCurrentVariant(event.target); // Custom Code: function called
 
       publish(PUB_SUB_EVENTS.optionValueSelectionChange, {
         data: {
@@ -1274,6 +1274,49 @@ class VariantSelects extends HTMLElement {
           selectedOptionValues: this.selectedOptionValues,
         },
       });
+      // Custom Code Start: Update Variant Description [Know whether variant has description - Yes then render description]
+      const metafieldsData = JSON.parse(
+        document.getElementById("variant-metafields-data").textContent
+      );
+      console.log("Dataaaaaaa" , document.getElementById("variant-metafields-data").textContent);
+      console.log("metafieldsData", metafieldsData);
+      const variantSelectEl =
+        this.closest("product-form")?.querySelector('[name="id"]');
+      const currentVariantId = variantSelectEl ? variantSelectEl.value : null;
+      console.log("variantSelectEl", variantSelectEl);
+
+      if (currentVariantId) {
+        const desc = metafieldsData[currentVariantId]?.variant_description;
+
+        // --- Collapsible Row Layout ---
+        const descRow = document.getElementById("variant-desc-row");
+        const descContent = document.getElementById("variant-desc-content");
+
+        if (descRow && descContent) {
+          if (desc && desc.trim() !== "") {
+          descRow.style.display = "block";
+            descContent.innerHTML = desc;
+          } else {
+            descRow.style.display = "none";
+            descContent.innerHTML = "";
+          }
+        }
+  
+        // --- Tab Layout ---
+        const descBlock = document.getElementById("variant-desc");
+        if (descBlock) {
+          const descText = descBlock.querySelector("p");
+          if (desc && desc.trim() !== "") {
+            descBlock.style.display = "block";
+            descText.textContent = desc;
+          } else {
+            descBlock.style.display = "none";
+            descText.textContent = "";
+          }
+        }
+
+      }
+      // Custom Code End: Update Variant Description
     });
   }
 
