@@ -14,16 +14,40 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_aPqDDP": {
+          "type": "announcement",
+          "settings": {
+            "text": "WELCOME TO OUR STORE",
+            "link": ""
+          }
+        },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
             "text": "STEP INTO A WORLD OF TIMELESS ELEGANCE AND COUTURE EXCELLENCE",
             "link": ""
           }
+        },
+        "announcement_VDCNpC": {
+          "type": "announcement",
+          "settings": {
+            "text": "ELEVATE YOUR WARDROBE – NEW ARRIVALS DROPPING WEEKLY",
+            "link": ""
+          }
+        },
+        "announcement_V6Hz68": {
+          "type": "announcement",
+          "settings": {
+            "text": "DRESS SHARP, SHOP SMART – EXCLUSIVE DEALS LIVE NOW",
+            "link": ""
+          }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "announcement_aPqDDP",
+        "announcement-bar-0",
+        "announcement_VDCNpC",
+        "announcement_V6Hz68"
       ],
       "settings": {
         "auto_rotate": false,
